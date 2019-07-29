@@ -66,6 +66,7 @@ namespace Microsoft.AspNetCore.Components.Server
             }
 
             CircuitHost = null;
+            circuitHost.UnhandledException -= CircuitHost_UnhandledException;
             return _circuitRegistry.DisconnectAsync(circuitHost, Context.ConnectionId);
         }
 
@@ -124,8 +125,8 @@ namespace Microsoft.AspNetCore.Components.Server
             if (circuitHost != null)
             {
                 CircuitHost = circuitHost;
+                CircuitHost.UnhandledException += CircuitHost_UnhandledException;
 
-                circuitHost.InitializeCircuitAfterPrerender(CircuitHost_UnhandledException);
                 circuitHost.SetCircuitUser(Context.User);
                 circuitHost.SendPendingBatches();
                 return true;
